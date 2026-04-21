@@ -31,13 +31,13 @@ echo -e "${MAGENTA}      ⚡ ShadowCraftMC Control Panel ⚡   ${NC}"
 echo -e "${CYAN}=========================================${NC}"
 
 echo -e ""
-echo -e "${YELLOW}[1]${NC} 🔥 Install Pterodactyl Panel"
+echo -e "${YELLOW}[1]${NC} 🔥 Install Panel"
 echo -e "${BLUE}[2]${NC} 🐉 Install Wings"
 echo -e "${GREEN}[3]${NC} ⬆️  Update System"
 echo -e "${RED}[4]${NC} 🗑️  Uninstall System"
 echo -e "${MAGENTA}[5]${NC} 🧩 Blueprint Installer"
 echo -e "${CYAN}[6]${NC} ☁️  Cloudflare Setup"
-echo -e "${YELLOW}[7]${NC} 🎨 Theme Installer"
+echo -e "${YELLOW}[7]${NC} 🎨 Theme Manager"
 echo -e "${BLUE}[8]${NC} ℹ️  Information"
 echo -e "${RED}[0]${NC} ❌ Exit"
 
@@ -48,37 +48,37 @@ case $opt in
 
 1)
 echo -e "${GREEN}Installing Panel...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/panel.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/panel.sh?token=GHSAT0AAAAAAD3AWEL7AXMUPPSNGREUOQXU2PG2OHA)
 ;;
 
 2)
 echo -e "${GREEN}Installing Wings...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/wings.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/wings.sh?token=GHSAT0AAAAAAD3AWEL6PEKX6BGC2QSTD5ZA2PG2O5Q)
 ;;
 
 3)
 echo -e "${GREEN}Updating...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/update.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/up.sh?token=GHSAT0AAAAAAD3AWEL6UCSANW53EOXYJEAS2PG2P3A)
 ;;
 
 4)
 echo -e "${RED}Uninstalling...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/uninstall.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/uninstall.sh?token=GHSAT0AAAAAAD3AWEL75OCNYQTE6YFTHLAQ2PG2QTQ)
 ;;
 
 5)
 echo -e "${MAGENTA}Blueprint...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/blueprint.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/blueprint.sh?token=GHSAT0AAAAAAD3AWEL7QAG6WX25NW36TLHK2PG2RBQ)
 ;;
 
 6)
 echo -e "${CYAN}Cloudflare Setup...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/cloudflare.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/cloudflare.sh?token=GHSAT0AAAAAAD3AWEL6EBQIDJEW37YICHGC2PG2RQQ)
 ;;
 
 7)
 echo -e "${YELLOW}Theme Installer...${NC}"
-bash <(curl -s https://ptero.pixelzone.qzz.io/th.sh)
+bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/th.sh?token=GHSAT0AAAAAAD3AWEL7TERNSMIEWFFSJARS2PG2SCQ)
 ;;
 
 8)
@@ -90,7 +90,7 @@ echo -e "${NC}"
 ;;
 
 0)
-echo -e "${RED}Exiting...${NC}"
+echo -e "${RED}Exiting 💣 Thanks For Using...${NC}"
 exit 0
 ;;
 
