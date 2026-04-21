@@ -136,12 +136,13 @@ nginx -t && systemctl restart nginx
 
 print_success "Nginx ready"
 
+print_header "CREATE ADMIN USER"
+cd /var/www/pterodactyl
+php artisan p:user:make
+
 print_header "FINAL"
 
 echo ""
 echo "🌐 URL: https://${DOMAIN}"
-echo "👤 Create admin:"
-echo "cd /var/www/pterodactyl && php artisan p:user:make"
-echo "🔑 DB PASS: ${DB_PASS}"
 echo ""
 echo "⚠️ Replace SSL with real certificate for production"
