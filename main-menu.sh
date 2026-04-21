@@ -22,11 +22,10 @@ cat << "EOF"
 \___ \  | |_| |   / _ \   | | | | | | | |  \ \ /\ / /  | |     | |_) |   / _ \   | |_      | |  
  ___) | |  _  |  / ___ \  | |_| | | |_| |   \ V  V /   | |___  |  _ <   / ___ \  |  _|     | |  
 |____/  |_| |_| /_/   \_\ |____/   \___/     \_/\_/     \____| |_| \_\ /_/   \_\ |_|       |_|  
-                     🔥ShadowCraftMC PTERODACTYL INSTALLITION 
-                                  ⚡ powered by ShadowCraftMC 💣
+                     🔥 ShadowCraftMC PTERODACTYL INSTALLITIO 
 EOF
 
-echo -e "${CYAN}        Pterodactyl Automation Hub v1.0${NC}"
+echo -e "${CYAN}           Pterodactyl Automation Hub v1.0${NC}"
 echo "======================================================"
 echo ""
 
