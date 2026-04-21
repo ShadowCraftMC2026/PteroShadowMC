@@ -25,16 +25,23 @@ banner() {
 clear
 echo -e "${RED}"
 cat << "EOF"
-███████╗██╗  ██╗ █████╗ ██████╗  ██████╗ ██████╗  █████╗ ███████╗████████╗
-██╔════╝██║  ██║██╔══██╗██╔══██╗██╔════╝ ██╔══██╗██╔══██╗██╔════╝╚══██╔══╝
-███████╗███████║███████║██║  ██║██║  ███╗██████╔╝███████║███████╗   ██║   
-╚════██║██╔══██║██╔══██║██║  ██║██║   ██║██╔══██╗██╔══██║╚════██║   ██║   
-███████║██║  ██║██║  ██║██████╔╝╚██████╔╝██║  ██║██║  ██║███████║   ██║   
-╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   
+ ____  _               _               
+/ ___|| |__   __ _  __| | _____      __
+\___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /
+ ___) | | | | (_| | (_| | (_) \ V  V / 
+|____/|_| |_|\__,_|\__,_|\___/ \_/\_/   
 
         >>> ShadowCraft Blueprint Installer <<<
 EOF
 echo -e "${RESET}"
+}
+
+# =========================
+# SAFE PAUSE
+# =========================
+pause() {
+echo ""
+read -p "Press Enter to return to menu..."
 }
 
 # =========================
@@ -43,13 +50,11 @@ echo -e "${RESET}"
 install_blueprint() {
 echo -e "${CYAN}>>> Starting Fresh Install...${RESET}"
 
-# Detect distro
 DISTRO=$(lsb_release -cs)
 
 apt update
 apt install -y curl gnupg ca-certificates unzip git wget
 
-# Node.js 20 install
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 
@@ -58,16 +63,14 @@ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.co
 apt update
 apt install -y nodejs
 
-# Yarn
 npm install -g yarn
 
-# Go to panel dir
 cd /var/www/pterodactyl || {
     echo -e "${RED}Pterodactyl not installed!${RESET}"
-    exit 1
+    pause
+    return
 }
 
-# Install deps
 yarn
 
 echo -e "${YELLOW}Downloading Blueprint...${RESET}"
@@ -77,14 +80,16 @@ wget "$(curl -s https://api.github.com/repos/BlueprintFramework/framework/releas
 
 unzip -o blueprint.zip
 
-# Run installer
 if [ ! -f "blueprint.sh" ]; then
     echo -e "${RED}blueprint.sh not found!${RESET}"
-    exit 1
+    pause
+    return
 fi
 
 chmod +x blueprint.sh
 bash blueprint.sh
+
+pause
 }
 
 # =========================
@@ -98,6 +103,8 @@ if command -v blueprint &> /dev/null; then
 else
     echo -e "${RED}Blueprint command not found!${RESET}"
 fi
+
+pause
 }
 
 # =========================
@@ -112,6 +119,8 @@ if command -v blueprint &> /dev/null; then
 else
     echo -e "${RED}Blueprint not installed!${RESET}"
 fi
+
+pause
 }
 
 # =========================
@@ -123,7 +132,7 @@ banner
 echo -e "${YELLOW}1) Install Blueprint${RESET}"
 echo -e "${CYAN}2) Reinstall${RESET}"
 echo -e "${GREEN}3) Update${RESET}"
-echo -e "${RED}0) Exit${RESET}"
+echo -e "${RED}0) Back to Main Menu${RESET}"
 echo ""
 
 read -p "Select option: " choice
@@ -132,10 +141,8 @@ case $choice in
     1) install_blueprint ;;
     2) reinstall_blueprint ;;
     3) update_blueprint ;;
-    0) exit 0 ;;
-    *) echo -e "${RED}Invalid option!${RESET}" ;;
+    0) continue ;;   # ❗ չի դուրս գալիս, վերադառնում է menu
+    *) echo -e "${RED}Invalid option!${RESET}"; pause ;;
 esac
 
-echo ""
-read -p "Press Enter to continue..."
 done
