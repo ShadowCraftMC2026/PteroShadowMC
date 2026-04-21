@@ -152,13 +152,17 @@ systemctl daemon-reload
 systemctl enable --now redis-server pteroq.service
 
 # =========================
+# CREATE ADMIN USER 
+# =========================
+cd /var/wwww/pterodactyl
+php artisan p:user:make
+
+# =========================
 # FINAL
 # =========================
 echo ""
 echo "=================================="
 echo "✅ PANEL INSTALLED SUCCESSFULLY"
+echo "🚀 POWERED BY ShadowCraftMC"
 echo "🌐 URL: https://${DOMAIN}"
-echo "👤 CREATE ADMIN:"
-echo "cd /var/www/pterodactyl && php artisan p:user:make"
-echo "🔑 DB PASS: ${DB_PASS}"
 echo "=================================="
