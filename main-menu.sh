@@ -62,7 +62,7 @@ while true; do
     echo "4) Uninstall System"
     echo "5) Blueprint Installer"
     echo "6) Cloudflare Setup"
-    echo "7) Theme Installer"
+    echo "7) Theme Manager"
     echo "8) Information"
     echo "0) Exit"
     echo "========================================"
@@ -73,31 +73,31 @@ while true; do
     case $opt in
 
         1)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/panel.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/panel.sh?token=GHSAT0AAAAAAD3AWEL7A5DPIHIKQPLNDMKO2PGZ5UA"
             ;;
 
         2)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/wings.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/wings.sh?token=GHSAT0AAAAAAD3AWEL652XK23DWJHUHFZ3Y2PGZ6VA"
             ;;
 
         3)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/up.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/up.sh?token=GHSAT0AAAAAAD3AWEL7V4AMV3QPVVX2OYBY2PGZ75Q"
             ;;
 
         4)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/uninstall.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/uninstall.sh?token=GHSAT0AAAAAAD3AWEL6RSR6V5O6KNJLEW2C2PG2ASQ"
             ;;
 
         5)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/blueprint.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/blueprint.sh?token=GHSAT0AAAAAAD3AWEL7JIHYPRJA2FNB2KX22PG2BIA"
             ;;
 
         6)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/cloudflare.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/cloudflare.sh?token=GHSAT0AAAAAAD3AWEL7WO4FZ7GXU62JY3BY2PG2B4A"
             ;;
 
         7)
-            run_script "https://raw.githubusercontent.com/pterodactylService/PteroShadow/refs/heads/main/cd/th.sh"
+            run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/th.sh?token=GHSAT0AAAAAAD3AWEL7KAEIAUIAKXNHN7LQ2PG2DWA"
             ;;
 
         8)
