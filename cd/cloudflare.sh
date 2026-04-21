@@ -20,7 +20,13 @@ error() {
     echo -e "${RED}[✗] $1${NC}"
 }
 
+pause() {
+    echo ""
+    read -p "Press Enter to return..." 
+}
+
 # Banner
+banner() {
 clear
 echo -e "${BLUE}"
 echo "   ██████╗██╗      ██████╗ ██╗   ██╗██████╗ "
@@ -30,38 +36,70 @@ echo "  ██║     ██║     ██║   ██║██║   ██║�
 echo "  ╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝"
 echo "   ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝ "
 echo -e "${NC}"
-echo -e "${YELLOW}        Shadow Cloudflare Installer${NC}"
+echo -e "${YELLOW}        ShadowCraft Cloudflare Manager${NC}"
 echo ""
+}
 
-print "Starting Cloudflared Installation..."
+install_cf() {
+print "Installing Cloudflared..."
 
-# 1. Keyrings
-print "Creating keyrings directory"
 sudo mkdir -p --mode=0755 /usr/share/keyrings
 
-# 2. GPG Key
-print "Adding Cloudflare GPG key"
 curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg \
 | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
 
-# 3. Repo
-print "Adding Cloudflare repository"
 echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main" \
 | sudo tee /etc/apt/sources.list.d/cloudflared.list >/dev/null
 
-# 4. Install
-print "Installing cloudflared"
 sudo apt-get update -y >/dev/null 2>&1
 sudo apt-get install -y cloudflared >/dev/null 2>&1
 
-# 5. Verify
 if command -v cloudflared >/dev/null 2>&1; then
-    success "Cloudflared installed successfully!"
-
-    echo ""
-    echo -e "${YELLOW}Next step:${NC}"
-    echo "Run: cloudflared tunnel login"
+    success "Cloudflared installed!"
 else
-    error "Installation failed"
-    exit 1
+    error "Install failed!"
 fi
+}
+
+login_cf() {
+print "Paste your Cloudflare token"
+echo ""
+
+read -p "Token: " CF_TOKEN
+
+if [[ -z "$CF_TOKEN" ]]; then
+    error "Token cannot be empty!"
+    return
+fi
+
+print "Starting tunnel..."
+
+# Run tunnel using token
+cloudflared tunnel --no-autoupdate run --token "$CF_TOKEN" &
+sleep 2
+
+success "Tunnel started!"
+echo ""
+echo -e "${YELLOW}👉 Now your site is accessible via Cloudflare Tunnel${NC}"
+}
+
+# ===== MENU =====
+while true; do
+banner
+
+echo -e "${YELLOW}1) Install Cloudflared${NC}"
+echo -e "${CYAN}2) login tunnel${NC}"
+echo -e "${RED}0) Back${NC}"
+echo ""
+
+read -p "Select option: " choice
+
+case $choice in
+    1) install_cf ;;
+    2) login_cf ;;
+    0) break ;;
+    *) echo -e "${RED}Invalid option!${NC}" ;;
+esac
+
+pause
+done
