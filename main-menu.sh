@@ -48,37 +48,37 @@ case $opt in
 
 1)
 echo -e "${GREEN}Installing Panel...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/panel.sh?token=GHSAT0AAAAAAD3AWEL7AXMUPPSNGREUOQXU2PG2OHA)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/panel.sh?token=GHSAT0AAAAAAD3AWEL7AXMUPPSNGREUOQXU2PG2OHA"
 ;;
 
 2)
 echo -e "${GREEN}Installing Wings...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/wings.sh?token=GHSAT0AAAAAAD3AWEL6PEKX6BGC2QSTD5ZA2PG2O5Q)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/wings.sh?token=GHSAT0AAAAAAD3AWEL6PEKX6BGC2QSTD5ZA2PG2O5Q"
 ;;
 
 3)
 echo -e "${GREEN}Updating...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/up.sh?token=GHSAT0AAAAAAD3AWEL6UCSANW53EOXYJEAS2PG2P3A)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/up.sh?token=GHSAT0AAAAAAD3AWEL6UCSANW53EOXYJEAS2PG2P3A"
 ;;
 
 4)
 echo -e "${RED}Uninstalling...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/uninstall.sh?token=GHSAT0AAAAAAD3AWEL75OCNYQTE6YFTHLAQ2PG2QTQ)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/uninstall.sh?token=GHSAT0AAAAAAD3AWEL75OCNYQTE6YFTHLAQ2PG2QTQ"
 ;;
 
 5)
 echo -e "${MAGENTA}Blueprint...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/blueprint.sh?token=GHSAT0AAAAAAD3AWEL7QAG6WX25NW36TLHK2PG2RBQ)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/blueprint.sh?token=GHSAT0AAAAAAD3AWEL7QAG6WX25NW36TLHK2PG2RBQ"
 ;;
 
 6)
 echo -e "${CYAN}Cloudflare Setup...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/cloudflare.sh?token=GHSAT0AAAAAAD3AWEL6EBQIDJEW37YICHGC2PG2RQQ)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/cloudflare.sh?token=GHSAT0AAAAAAD3AWEL6EBQIDJEW37YICHGC2PG2RQQ"
 ;;
 
 7)
 echo -e "${YELLOW}Theme Installer...${NC}"
-bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/th.sh?token=GHSAT0AAAAAAD3AWEL7TERNSMIEWFFSJARS2PG2SCQ)
+run_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/th.sh?token=GHSAT0AAAAAAD3AWEL7TERNSMIEWFFSJARS2PG2SCQ"
 ;;
 
 8)
