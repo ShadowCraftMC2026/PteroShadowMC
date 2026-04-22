@@ -30,32 +30,7 @@ echo -e "${CYAN}=========================================${NC}"
 echo -e "${MAGENTA}      ⚡ ShadowCraftMC Control Panel ⚡   ${NC}"
 echo -e "${CYAN}=========================================${NC}"
 
-#!/bin/bash
-
-# ==============================
-#   ShadowCraftMC MAIN MENU
-# ==============================
-
-RED='\033[0;31m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-YELLOW='\033[1;33m'
-MAGENTA='\033[0;35m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-clear
-
-echo -e "${RED}"
-cat << "EOF"
-   ____    _   _      _      ____     ___
-SHADOWCRAFTMC PANEL
-EOF
-echo -e "${NC}"
-
-echo -e "${CYAN}ShadowCraftMC Control Panel${NC}"
-echo ""
-
+# 
 # =========================
 # 🔐 HIDDEN LINKS (BASE64)
 # =========================
@@ -101,10 +76,18 @@ case $opt in
 5) run "$BLUEPRINT" ;;
 6) run "$CLOUDFLARE" ;;
 7) run "$THEME" ;;
-
-  echo "THANKS FOR USING..."
+8)
+  echo -e "${BLUE}"
+  echo "ShadowCraftMC System"
+  echo "Made for Pterodactyl automation"
   echo "Version: 1.0"
+  echo -e "${NC}"
 ;;
-0) exit 0 ;;
-*) echo "Invalid option" ;;
+0) 
+  echo -e "${RED}Exiting 💣 Thanks For Using...${NC}"
+  exit 0
+;;
+*)
+  echo -e "${RED}Invalid option!${NC}"
+;;
 esac
