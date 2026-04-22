@@ -46,6 +46,7 @@ UNINSTALL="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYWRvd0NyYWZ0TUMyMDI2L
 BLUEPRINT="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYWRvd0NyYWZ0TUMyMDI2L1B0ZXJvU2hhZG93TUMvcmVmcy9oZWFkcy9tYWluL2NkL2JsdWVwcmludC5zaA=="
 CLOUDFLARE="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYWRvd0NyYWZ0TUMyMDI2L1B0ZXJvU2hhZG93TUMvcmVmcy9oZWFkcy9tYWluL2NkL2Nsb3VkZmxhcmUuc2g="
 THEME="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYWRvd0NyYWZ0TUMyMDI2L1B0ZXJvU2hhZG93TUMvcmVmcy9oZWFkcy9tYWluL2NkL3RoLnNo"
+TAILSCALE="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1NoYWRvd0NyYWZ0TUMyMDI2L1B0ZXJvU2hhZG93TUMvcmVmcy9oZWFkcy9tYWluL2NkL3Y0LnNo"
 
 run() {
   url=$(decode "$1")
@@ -63,6 +64,7 @@ echo -e "${RED}[4]${NC} 🗑️ Uninstall"
 echo -e "${MAGENTA}[5]${NC} 🧩 Blueprint"
 echo -e "${CYAN}[6]${NC} ☁️ Cloudflare Setup"
 echo -e "${YELLOW}[7]${NC} 🎨 Theme"
+echo -e "${BLUE}[8]${NC} 🔐 Tailscale"
 echo -e "${RED}[0]${NC} ❌ Exit"
 
 echo ""
@@ -76,7 +78,8 @@ case $opt in
 5) run "$BLUEPRINT" ;;
 6) run "$CLOUDFLARE" ;;
 7) run "$THEME" ;;
-8)
+8) run "$TAILSCALE" ;;
+9)
   echo -e "${BLUE}"
   echo "ShadowCraftMC System"
   echo "Made for Pterodactyl automation"
