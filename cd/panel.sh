@@ -73,7 +73,7 @@ sed -i "s|DB_USERNAME=.*|DB_USERNAME=${DB_USER}|g" .env
 sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${DB_PASS}|g" .env
 
 # =========================
-# INSTALL
+# INSTALL PANEL
 # =========================
 COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
 
@@ -152,17 +152,38 @@ systemctl daemon-reload
 systemctl enable --now redis-server pteroq.service
 
 # =========================
-# CREATE ADMIN USER 
+# AUTO ADMIN USER (FIXED)
 # =========================
-cd /var/wwww/pterodactyl
-php artisan p:user:make
+cd /var/www/pterodactyl
+
+ADMIN_EMAIL="admin@${DOMAIN}"
+ADMIN_PASS=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 12)
+
+php artisan p:user:make \
+--email="$ADMIN_EMAIL" \
+--username="admin" \
+--name-first="Admin" \
+--name-last="User" \
+--password="$ADMIN_PASS" \
+--admin=1 || true
 
 # =========================
-# FINAL
+# SAVE CREDENTIALS
+# =========================
+echo "URL: https://${DOMAIN}" > /root/panel_credentials.txt
+echo "DB_USER: ${DB_USER}" >> /root/panel_credentials.txt
+echo "DB_PASS: ${DB_PASS}" >> /root/panel_credentials.txt
+echo "ADMIN_EMAIL: ${ADMIN_EMAIL}" >> /root/panel_credentials.txt
+echo "ADMIN_PASS: ${ADMIN_PASS}" >> /root/panel_credentials.txt
+
+# =========================
+# FINAL OUTPUT
 # =========================
 echo ""
 echo "=================================="
 echo "✅ PANEL INSTALLED SUCCESSFULLY"
 echo "🚀 POWERED BY ShadowCraftMC"
 echo "🌐 URL: https://${DOMAIN}"
+echo "👤 ADMIN EMAIL: ${ADMIN_EMAIL}"
+echo "🔑 ADMIN PASS: ${ADMIN_PASS}"
 echo "=================================="
