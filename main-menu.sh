@@ -60,10 +60,10 @@ run() {
 echo -e "${YELLOW}[1]${NC} 🔥 Install Panel"
 echo -e "${BLUE}[2]${NC} 🐉 Install Wings"
 echo -e "${GREEN}[3]${NC} ⬆️ Update"
-echo -e "${RED}[4]${NC} 🗑️ Uninstall"
+echo -e "${RED}[4]${NC} 🗑️ Uninstall All"
 echo -e "${MAGENTA}[5]${NC} 🧩 Blueprint"
 echo -e "${CYAN}[6]${NC} ☁️ Cloudflare Setup"
-echo -e "${YELLOW}[7]${NC} 🎨 Theme"
+echo -e "${YELLOW}[7]${NC} 🎨 Nebula Theme"
 echo -e "${BLUE}[8]${NC} 🔐 Tailscale"
 echo -e "${RED}[0]${NC} ❌ Exit"
 
