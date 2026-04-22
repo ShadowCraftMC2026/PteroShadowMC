@@ -102,7 +102,7 @@ case $opt in
 6) run "$CLOUDFLARE" ;;
 7) run "$THEME" ;;
 
-  echo "ShadowCraftMC Pterodactyl System"
+  echo "THANKS FOR USING..."
   echo "Version: 1.0"
 ;;
 0) exit 0 ;;
