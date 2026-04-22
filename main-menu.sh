@@ -66,7 +66,7 @@ echo -e "${MAGENTA}[5]${NC} 🧩 Blueprint"
 echo -e "${CYAN}[6]${NC} ☁️ Cloudflare Setup"
 echo -e "${YELLOW}[7]${NC} 🎨 Nebula Theme"
 echo -e "${BLUE}[8]${NC} 🔐 Tailscale"
-echo -e "${BLUE}[9]${NC} 🫆 Databse
+echo -e "${BLUE}[9]${NC} 🫆 Databse"
 echo -e "${RED}[0]${NC} ❌ Exit"
 
 echo ""
