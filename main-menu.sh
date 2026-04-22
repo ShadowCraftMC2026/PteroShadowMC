@@ -1,39 +1,36 @@
 #!/bin/bash
 
-# ==============================
-#   ShadowCraftMC MAIN MENU
-# ==============================
+# ==========================================
+#   ShadowCraftMC MAIN MENU (Color Edition)
+# ==========================================
 
-# COLORS
-RED='\033[0;31m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-YELLOW='\033[1;33m'
-MAGENTA='\033[0;35m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+# COLORS (256-bit Palette for better look)
+R1='\033[38;5;196m' # Red
+R2='\033[38;5;202m' # Orange-Red
+Y1='\033[38;5;226m' # Yellow
+G1='\033[38;5;118m' # Light Green
+G2='\033[38;5;46m'  # Bright Green
+CYAN='\033[38;5;51m'
+MAG='\033[38;5;201m'
+BLUE='\033[38;5;39m'
+NC='\033[0m' # No Color
 
 clear
 
-# ===== ASCII BANNER =====
-echo -e "${RED}"
-cat << "EOF"
- ███████╗ ██╗  ██╗  █████╗  ██████╗   ██████╗  ██╗    ██╗
- ██╔════╝ ██║  ██║ ██╔══██╗ ██╔══██╗ ██╔═══██╗ ██║    ██║
- ███████╗ ███████║ ███████║ ██║  ██║ ██║   ██║ ██║ █╗ ██║
- ╚════██║ ██╔══██║ ██╔══██║ ██║  ██║ ██║   ██║ ██║███╗██║
- ███████║ ██║  ██║ ██║  ██║ ██████╔╝ ╚██████╔╝ ╚███╔███╔╝
- ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═╝ ╚═════╝   ╚═════╝   ╚══╝╚══╝            
+# ===== ASCII BANNER (Gradient SHADOW) =====
+echo -e "${R1} ███████╗ ██╗  ██╗  █████╗  ██████╗   ██████╗  ██╗    ██╗"
+echo -e "${R2} ██╔════╝ ██║  ██║ ██╔══██╗ ██╔══██╗ ██╔═══██╗ ██║    ██║"
+echo -e "${Y1} ███████╗ ███████║ ███████║ ██║  ██║ ██║   ██║ ██║ █╗ ██║"
+echo -e "${G1} ╚════██║ ██╔══██║ ██╔══██║ ██║  ██║ ██║   ██║ ██║███╗██║"
+echo -e "${G2} ███████║ ██║  ██║ ██║  ██║ ██████╔╝ ╚██████╔╝ ╚███╔███╔╝"
+echo -e "${G2} ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═╝ ╚═════╝   ╚═════╝   ╚══╝╚══╝"
 
-                      MADE BY  S H A D O W  ⚡
-EOF
-echo -e "${NC}"
+echo -e "                      ${Y1}MADE BY  ${R1}S H A D O W  ⚡${NC}"
+echo -e ""
+echo -e "${CYAN}=================================================${NC}"
+echo -e "${MAG}         ⚡ ShadowCraftMC Control Panel ⚡        ${NC}"
+echo -e "${CYAN}=================================================${NC}"
 
-echo -e "${CYAN}=========================================${NC}"
-echo -e "${MAGENTA}      ⚡ ShadowCraftMC Control Panel ⚡   ${NC}"
-echo -e "${CYAN}=========================================${NC}"
-
-# 
 # =========================
 # 🔐 HIDDEN LINKS (BASE64)
 # =========================
@@ -61,19 +58,20 @@ run() {
 # MENU
 # =========================
 
-echo -e "${YELLOW}[1]${NC} 🔥 Install Panel"
+echo -e "${Y1}[1]${NC} 🔥 Install Panel"
 echo -e "${BLUE}[2]${NC} 🐉 Install Wings"
-echo -e "${GREEN}[3]${NC} ⬆️ Update"
-echo -e "${RED}[4]${NC} 🗑️ Uninstall All"
-echo -e "${MAGENTA}[5]${NC} 🧩 Blueprint"
+echo -e "${G2}[3]${NC} ⬆️ Update"
+echo -e "${R1}[4]${NC} 🗑️ Uninstall All"
+echo -e "${MAG}[5]${NC} 🧩 Blueprint"
 echo -e "${CYAN}[6]${NC} ☁️ Cloudflare Setup"
-echo -e "${YELLOW}[7]${NC} 🎨 Nebula Theme"
+echo -e "${Y1}[7]${NC} 🎨 Nebula Theme"
 echo -e "${BLUE}[8]${NC} 🔐 Tailscale"
-echo -e "${BLUE}[9]${NC} 🫆 Databse"
-echo -e "${RED}[0]${NC} ❌ Exit"
+echo -e "${BLUE}[9]${NC} 🫆 Database"
+echo -e "${R1}[0]${NC} ❌ Exit"
 
 echo ""
-read -p "👉 Choose: " opt
+echo -ne "${G2}👉 Choose: ${NC}"
+read opt
 
 case $opt in
 1) run "$PANEL" ;;
@@ -93,10 +91,10 @@ case $opt in
   echo -e "${NC}"
 ;;
 0) 
-  echo -e "${RED}Exiting 💣 Thanks For Using...${NC}"
+  echo -e "${R1}Exiting 💣 Thanks For Using...${NC}"
   exit 0
 ;;
 *)
-  echo -e "${RED}Invalid option!${NC}"
+  echo -e "${R1}Invalid option!${NC}"
 ;;
 esac
