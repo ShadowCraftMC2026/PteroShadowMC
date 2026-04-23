@@ -206,7 +206,7 @@ system_info() {
 show_menu() {
     clear
     print_header_rule
-    echo -e "${RED}           🚀 SHADOWCODING HOSTING MANAGER            ${NC}"
+    echo -e "${RED}           🚀 SHADOWCRAFTMC MANAGER            ${NC}"
     echo -e "${RED}              made by shadowcraftmc , jishnu           ${NC}"
     print_header_rule
 
@@ -233,15 +233,14 @@ welcome_animation() {
     print_header_rule
     echo -e "${RED}"
 cat <<'EOF'
-       _ _     _
-      | (_)   | |
-      | |_ ___| |__  _ __  _   _
-  _   | | / __| '_ \| '_ \| | | |
- | |__| | \__ \ | | | | | | |_| |
-  \____/|_|___/_| |_|_| |_|\__,_|
+ ____    _   _      _      ____     ___   __        __
+/ ___|  | | | |    / \    |  _ \   / _ \  \ \      / /
+\___ \  | |_| |   / _ \   | | | | | | | |  \ \ /\ / / 
+ ___) | |  _  |  / ___ \  | |_| | | |_| |   \ V  V /  
+|____/  |_| |_| /_/   \_\ |____/   \___/     \_/\_/   
 EOF
     echo -e "${NC}"
-    echo -e "${RED}                   Hosting Manager${NC}"
+    echo -e "${RED}                   ShadowCraftMC Manager${NC}"
     print_header_rule
     sleep 1.2
 }
@@ -301,7 +300,7 @@ MYSQL_SCRIPT
             read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
             ;;
         0)
-            echo -e "${GREEN}Exiting Jishnu Hosting Manager...${NC}"
+            echo -e "${GREEN}Exiting ShadowCraftMC Manager...${NC}"
             print_header_rule
             echo -e "${RED}           Thank you for using our tools!       ${NC}"
             print_header_rule
