@@ -14,7 +14,7 @@ install_ptero() {
     clear
     echo -e "${CYAN}"
     echo "┌──────────────────────────────────────────────┐"
-    echo "│        🚀 Pterodactyl Installation            │"
+    echo "│        🚀 ShadowCraftMC Pterodactyl Installation            │"
     echo "└──────────────────────────────────────────────┘${NC}"
     bash <(curl -s https://raw.githubusercontent.com/nobita329/The-Coding-Hub/refs/heads/main/srv/panel/pterodactyl.sh)
     echo -e "${GREEN}✔ Installation Complete${NC}"
