@@ -155,7 +155,7 @@ blueprint_theme_menu() {
 
         case $subchoice in
             1)
-                run_remote_script "https://raw.githubusercontent.com/JishnuTheGamer/Vps/refs/heads/main/cd/Blueprint2.sh"
+                run_remote_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/Blueprint2.sh"
                 ;;
             2)
                 print_header_rule
@@ -164,7 +164,7 @@ blueprint_theme_menu() {
                 echo -e "${RED}Running: ${BOLD}Themes + Extensions${NC}"
                 print_header_rule
                 print_status "Installing Themes + Extensions"
-                bash <(curl -s https://raw.githubusercontent.com/nobita329/The-Coding-Hub/refs/heads/main/srv/thame/chang.sh)
+                bash <(curl -s https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/chang.sh)
                 print_success "Themes + Extensions completed successfully"
                 echo -e ""
                 read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
@@ -253,13 +253,13 @@ while true; do
     read -r choice
 
     case $choice in
-        1) run_remote_script "https://raw.githubusercontent.com/JishnuTheGamer/Vps/refs/heads/main/cd/panel2.sh" ;;
-        2) run_remote_script "https://raw.githubusercontent.com/JishnuTheGamer/Vps/refs/heads/main/cd/wing2.sh" ;;
-        3) run_remote_script "https://raw.githubusercontent.com/JishnuTheGamer/Vps/refs/heads/main/cd/uninstall2.sh" ;;
+        1) run_remote_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/panel2.sh" ;;
+        2) run_remote_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/wing2.sh" ;;
+        3) run_remote_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/uninstall2.sh" ;;
         4) blueprint_theme_menu ;;
-        5) run_remote_script "https://raw.githubusercontent.com/JishnuTheGamer/Vps/refs/heads/main/cd/cloudflare.sh" ;;
+        5) run_remote_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/cloudflare.sh" ;;
         6) system_info ;;
-        7) run_remote_script "https://raw.githubusercontent.com/nobita329/The-Coding-Hub/refs/heads/main/srv/tools/Tailscale.sh" ;;
+        7) run_remote_script "https://raw.githubusercontent.com/ShadowCraftMC2026/PteroShadowMC/refs/heads/main/cd/Tailscale.sh" ;;
         8)
             print_header_rule
             big_header "DATABASE SETUP"
