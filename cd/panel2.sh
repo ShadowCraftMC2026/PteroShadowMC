@@ -1,236 +1,136 @@
 #!/bin/bash
-set -e
+# ====================================================
+#      PTERODACTYL INSTALL / USER / UPDATE / REMOVE
+# ====================================================
 
-# COLORS
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m'
+GREEN="\033[1;32m"
+RED="\033[1;31m"
+YELLOW="\033[1;33m"
+CYAN="\033[1;36m"
+NC="\033[0m"
 
-print_header() {
-echo -e "\n${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${CYAN} $1 ${NC}"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+# ================== INSTALL FUNCTION ==================
+install_ptero() {
+    clear
+    echo -e "${CYAN}"
+    echo "┌──────────────────────────────────────────────┐"
+    echo "│        🚀 ShadowCraft Pterodactyl Installation            │"
+    echo "└──────────────────────────────────────────────┘${NC}"
+    bash <(curl -s https://raw.githubusercontent.com/nobita329/The-Coding-Hub/refs/heads/main/srv/panel/pterodactyl.sh)
+    echo -e "${GREEN}✔ Installation Complete${NC}"
+    read -p "Press Enter to return..."
 }
 
-print_success() { echo -e "${GREEN}✔ $1${NC}"; }
-print_error() { echo -e "${RED}✖ $1${NC}"; }
-print_info() { echo -e "${YELLOW}➜ $1${NC}"; }
+# ================== CREATE USER ==================
+create_user() {
+    clear
+    echo -e "${CYAN}"
+    echo "┌──────────────────────────────────────────────┐"
+    echo "│        👤 Create Pterodactyl User             │"
+    echo "└──────────────────────────────────────────────┘${NC}"
 
+    if [ ! -d /var/www/pterodactyl ]; then
+        echo -e "${RED}❌ Panel not installed!${NC}"
+        read -p "Press Enter to return..."
+        return
+    fi
+
+    cd /var/www/pterodactyl || exit
+    php artisan p:user:make
+
+    echo -e "${GREEN}✔ User created successfully${NC}"
+    read -p "Press Enter to return..."
+}
+
+# ================= PANEL UNINSTALL =================
+uninstall_panel() {
+    echo ">>> Stopping Panel service..."
+    systemctl stop pteroq.service 2>/dev/null || true
+    systemctl disable pteroq.service 2>/dev/null || true
+    rm -f /etc/systemd/system/pteroq.service
+    systemctl daemon-reload
+
+    echo ">>> Removing cronjob..."
+    crontab -l | grep -v 'php /var/www/pterodactyl/artisan schedule:run' | crontab - || true
+
+    echo ">>> Removing files..."
+    rm -rf /var/www/pterodactyl
+
+    echo ">>> Dropping database..."
+    mysql -u root -e "DROP DATABASE IF EXISTS panel;"
+    mysql -u root -e "DROP USER IF EXISTS 'pterodactyl'@'127.0.0.1';"
+    mysql -u root -e "FLUSH PRIVILEGES;"
+
+    echo ">>> Cleaning nginx..."
+    rm -f /etc/nginx/sites-enabled/pterodactyl.conf
+    rm -f /etc/nginx/sites-available/pterodactyl.conf
+    systemctl reload nginx || true
+
+    echo "✅ Panel removed."
+}
+
+uninstall_ptero() {
+    clear
+    echo -e "${CYAN}"
+    echo "┌──────────────────────────────────────────────┐"
+    echo "│        🧹 Pterodactyl Uninstallation          │"
+    echo "└──────────────────────────────────────────────┘${NC}"
+    uninstall_panel
+    echo -e "${GREEN}✔ Panel Uninstalled (Wings untouched)${NC}"
+    read -p "Press Enter to return..."
+}
+
+# ================= UPDATE FUNCTION =================
+update_panel() {
+    clear
+    echo -e "${YELLOW}"
+    echo "═══════════════════════════════════════════════"
+    echo "        ⚡ PTERODACTYL PANEL UPDATE ⚡         "
+    echo "═══════════════════════════════════════════════${NC}"
+
+    cd /var/www/pterodactyl || {
+        echo -e "${RED}❌ Panel not found!${NC}"
+        read
+        return
+    }
+
+    php artisan down
+    curl -L https://github.com/pterodactyl/panel/releases/download/v1.11.11/panel.tar.gz | tar -xzv
+    chmod -R 755 storage/* bootstrap/cache
+    composer install --no-dev --optimize-autoloader
+    php artisan view:clear
+    php artisan config:clear
+    php artisan migrate --seed --force
+    chown -R www-data:www-data /var/www/pterodactyl/*
+    php artisan queue:restart
+    php artisan up
+
+    echo -e "${GREEN}🎉 Panel Updated Successfully${NC}"
+    read -p "Press Enter to return..."
+}
+
+# ===================== MENU =====================
+while true; do
 clear
-echo -e "${CYAN}🔥 ShadowCraft Pterodactyl Installer${NC}\n"
+echo -e "${YELLOW}"
+echo "╔═══════════════════════════════════════════════╗"
+echo "║        🐲 PTERODACTYL CONTROL CENTER           ║"
+echo "╠═══════════════════════════════════════════════╣"
+echo -e "║ ${GREEN}1) Install Panel${NC}"
+echo -e "║ ${CYAN}2) Create Panel User${NC}"
+echo -e "║ ${YELLOW}3) Update Panel${NC}"
+echo -e "║ ${RED}4) Uninstall Panel${NC}"
+echo -e "║ 5) Exit"
+echo "╚═══════════════════════════════════════════════╝"
+echo -ne "${CYAN}Select Option → ${NC}"
+read choice
 
-read -p "🌐 Domain (panel.example.com): " DOMAIN
-[ -z "$DOMAIN" ] && print_error "Domain required" && exit 1
-
-# =========================
-# VARIABLES
-# =========================
-DB_NAME="panel"
-DB_USER="pterodactyl"
-DB_PASS=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)
-PHP_VERSION="8.3"
-
-# =========================
-# DEPENDENCIES
-# =========================
-print_header "INSTALLING DEPENDENCIES"
-
-apt update -y
-apt install -y curl gnupg unzip git lsb-release software-properties-common
-
-OS=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
-
-if [[ "$OS" == "ubuntu" ]]; then
-    add-apt-repository -y ppa:ondrej/php
-else
-    curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /usr/share/keyrings/php.gpg
-    echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/php.list
-fi
-
-apt update -y
-
-# =========================
-# SERVICES
-# =========================
-print_header "INSTALLING SERVICES"
-
-apt install -y php${PHP_VERSION} php${PHP_VERSION}-{cli,fpm,mysql,mbstring,xml,zip,curl,gd,bcmath} \
-mariadb-server nginx redis-server
-
-# Composer
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-print_success "Services installed"
-
-# =========================
-# PANEL DOWNLOAD
-# =========================
-print_header "DOWNLOADING PANEL"
-
-mkdir -p /var/www/pterodactyl
-cd /var/www/pterodactyl
-
-curl -Lo panel.tar.gz https://github.com/pterodactyl/panel/releases/latest/download/panel.tar.gz
-tar -xzf panel.tar.gz
-
-chmod -R 755 storage bootstrap/cache
-
-print_success "Panel downloaded"
-
-# =========================
-# DATABASE
-# =========================
-print_header "DATABASE SETUP"
-
-mariadb -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};"
-mariadb -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'127.0.0.1' IDENTIFIED BY '${DB_PASS}';"
-mariadb -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'127.0.0.1';"
-mariadb -e "FLUSH PRIVILEGES;"
-
-print_success "Database ready"
-
-# =========================
-# ENV CONFIG
-# =========================
-print_header "CONFIGURING ENV"
-
-cp .env.example .env
-
-sed -i "s|APP_URL=.*|APP_URL=https://${DOMAIN}|g" .env
-sed -i "s|DB_DATABASE=.*|DB_DATABASE=${DB_NAME}|g" .env
-sed -i "s|DB_USERNAME=.*|DB_USERNAME=${DB_USER}|g" .env
-sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${DB_PASS}|g" .env
-
-# =========================
-# INSTALL PANEL
-# =========================
-print_header "INSTALLING PANEL"
-
-COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
-php artisan key:generate --force
-php artisan migrate --seed --force
-
-chown -R www-data:www-data /var/www/pterodactyl
-
-print_success "Panel installed"
-
-# =========================
-# CRON
-# =========================
-print_header "SETTING CRON"
-
-(crontab -l 2>/dev/null; echo "* * * * * php /var/www/pterodactyl/artisan schedule:run >> /dev/null 2>&1") | crontab -
-
-# =========================
-# QUEUE SERVICE
-# =========================
-print_header "SETTING QUEUE"
-
-cat > /etc/systemd/system/pteroq.service <<EOF
-[Unit]
-Description=Pterodactyl Queue Worker
-After=redis-server.service
-
-[Service]
-User=www-data
-Group=www-data
-Restart=always
-ExecStart=/usr/bin/php /var/www/pterodactyl/artisan queue:work --sleep=3 --tries=3
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-systemctl daemon-reload
-systemctl enable --now redis-server pteroq.service
-
-# =========================
-# SSL (SELF SIGNED)
-# =========================
-print_header "SSL SETUP"
-
-mkdir -p /etc/certs/panel
-
-openssl req -new -newkey rsa:2048 -nodes -x509 -days 365 \
--subj "/CN=${DOMAIN}" \
--keyout /etc/certs/panel/privkey.pem \
--out /etc/certs/panel/fullchain.pem
-
-# =========================
-# NGINX
-# =========================
-print_header "NGINX CONFIG"
-
-cat > /etc/nginx/sites-available/pterodactyl.conf <<EOF
-server {
-    listen 80;
-    server_name ${DOMAIN};
-    return 301 https://\$host\$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    server_name ${DOMAIN};
-
-    root /var/www/pterodactyl/public;
-    index index.php;
-
-    ssl_certificate /etc/certs/panel/fullchain.pem;
-    ssl_certificate_key /etc/certs/panel/privkey.pem;
-
-    location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
-
-    location ~ \.php\$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php${PHP_VERSION}-fpm.sock;
-    }
-}
-EOF
-
-ln -sf /etc/nginx/sites-available/pterodactyl.conf /etc/nginx/sites-enabled/
-nginx -t && systemctl restart nginx
-
-print_success "Nginx ready"
-
-# =========================
-# AUTO ADMIN USER
-# =========================
-print_header "CREATING ADMIN USER"
-
-cd /var/www/pterodactyl
-
-ADMIN_EMAIL="admin@${DOMAIN}"
-ADMIN_PASS=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 12)
-
-php artisan p:user:make \
---email="$ADMIN_EMAIL" \
---username="admin" \
---name-first="Admin" \
---name-last="User" \
---password="$ADMIN_PASS" \
---admin=1 || true
-
-# =========================
-# SAVE INFO
-# =========================
-echo "URL: https://${DOMAIN}" > /root/panel-info.txt
-echo "DB_USER: ${DB_USER}" >> /root/panel-info.txt
-echo "DB_PASS: ${DB_PASS}" >> /root/panel-info.txt
-echo "ADMIN_EMAIL: ${ADMIN_EMAIL}" >> /root/panel-info.txt
-echo "ADMIN_PASS: ${ADMIN_PASS}" >> /root/panel-info.txt
-
-# =========================
-# FINAL
-# =========================
-print_header "DONE"
-
-echo -e "${GREEN}✔ PANEL INSTALLED SUCCESSFULLY${NC}"
-echo -e "${CYAN}🌐 URL: https://${DOMAIN}${NC}"
-echo -e "${YELLOW}📁 Credentials saved: /root/panel-info.txt${NC}"
-echo ""
-echo -e "${RED}⚠ Use real SSL in production later${NC}"
+case $choice in
+    1) install_ptero ;;
+    2) create_user ;;
+    3) update_panel ;;
+    4) uninstall_ptero ;;
+    5) clear; exit ;;
+    *) echo -e "${RED}Invalid option...${NC}"; sleep 1 ;;
+esac
+done
