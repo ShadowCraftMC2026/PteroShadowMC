@@ -1,116 +1,196 @@
 #!/bin/bash
 set -e
 
-# ======================
-# FUNCTIONS
-# ======================
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+NC='\033[0m' # No Color
+
+# Function to print section headers
+print_header() {
+    echo -e "\n${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN} $1 ${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+}
+
+# Function to print status messages
+print_status() {
+    echo -e "${YELLOW}⏳ $1...${NC}"
+}
+
+print_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}❌ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${MAGENTA}⚠️  $1${NC}"
+}
+
+# Function to display confirmation prompt
+confirm_action() {
+    local message="$1"
+    echo -e "${YELLOW}$message${NC}"
+    read -p "$(echo -e "${YELLOW}Are you sure you want to continue? (y/N): ${NC}")" -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "${GREEN}Operation cancelled.${NC}"
+        return 1
+    fi
+    return 0
+}
+
+# -------- Functions --------
 
 cleanup_nginx() {
-    echo ">>> Removing Nginx configuration..."
+    print_status "Removing Nginx configuration for Pterodactyl"
+    
+    if [[ -f "/etc/nginx/sites-enabled/pterodactyl.conf" ]]; then
+        sudo rm -f /etc/nginx/sites-enabled/pterodactyl.conf
+        print_success "Removed enabled site configuration"
+    fi
+    
+    if [[ -f "/etc/nginx/sites-available/pterodactyl.conf" ]]; then
+        sudo rm -f /etc/nginx/sites-available/pterodactyl.conf
+        print_success "Removed available site configuration"
+    fi
+    
+    if [[ -f "/etc/nginx/conf.d/pterodactyl.conf" ]]; then
+        sudo rm -f /etc/nginx/conf.d/pterodactyl.conf
+        print_success "Removed conf.d configuration"
+    fi
 
-    rm -f /etc/nginx/sites-enabled/pterodactyl.conf 2>/dev/null || true
-    rm -f /etc/nginx/sites-available/pterodactyl.conf 2>/dev/null || true
-    rm -f /etc/nginx/conf.d/pterodactyl.conf 2>/dev/null || true
-
-    if systemctl list-units --type=service | grep -q nginx; then
-        systemctl restart nginx 2>/dev/null || true
-        echo "✅ Nginx reloaded"
+    if command -v nginx >/dev/null 2>&1; then
+        sudo systemctl restart nginx
+        print_success "Nginx reloaded"
     fi
 }
 
 uninstall_panel() {
-    echo ">>> Stopping Panel..."
+    print_header "UNINSTALLING PTERODACTYL PANEL"
+    
+    if ! confirm_action "This will remove the Pterodactyl Panel and all its data."; then
+        return
+    fi
 
-    systemctl stop pteroq 2>/dev/null || true
-    systemctl disable pteroq 2>/dev/null || true
-    rm -f /etc/systemd/system/pteroq.service
-    systemctl daemon-reload
+    print_status "Stopping Panel service"
+    sudo systemctl stop pteroq.service 2>/dev/null || true
+    sudo systemctl disable pteroq.service 2>/dev/null || true
+    sudo rm -f /etc/systemd/system/pteroq.service
+    sudo systemctl daemon-reload
+    print_success "Panel service stopped and disabled"
 
-    echo ">>> Removing cron..."
-    crontab -l 2>/dev/null | grep -v 'artisan schedule:run' | crontab - 2>/dev/null || true
+    print_status "Removing Panel cronjob"
+    sudo crontab -l | grep -v 'php /var/www/pterodactyl/artisan schedule:run' | sudo crontab - 2>/dev/null || true
+    print_success "Cronjob removed"
 
-    echo ">>> Removing files..."
-    rm -rf /var/www/pterodactyl
+    print_status "Removing Panel files"
+    sudo rm -rf /var/www/pterodactyl
+    print_success "Panel files removed"
 
-    echo ">>> Removing database..."
-
-    mysql -u root -e "DROP DATABASE IF EXISTS panel;" 2>/dev/null || true
-    mysql -u root -e "DROP USER IF EXISTS 'pterodactyl'@'127.0.0.1';" 2>/dev/null || true
-    mysql -u root -e "DROP USER IF EXISTS 'pterodactyl'@'localhost';" 2>/dev/null || true
-    mysql -u root -e "FLUSH PRIVILEGES;" 2>/dev/null || true
+    print_status "Removing Panel MySQL database and user"
+    sudo mysql -u root -e "DROP DATABASE IF EXISTS panel;" 2>/dev/null || true
+    sudo mysql -u root -e "DROP USER IF EXISTS 'pterodactyl'@'127.0.0.1';" 2>/dev/null || true
+    sudo mysql -u root -e "FLUSH PRIVILEGES;" 2>/dev/null || true
+    print_success "Database and user removed"
 
     cleanup_nginx
 
-    echo "✅ Panel removed"
+    print_success "Panel uninstalled successfully!"
 }
 
 uninstall_wings() {
-    echo ">>> Stopping Wings..."
+    print_header "UNINSTALLING PTERODACTYL WINGS"
+    
+    if ! confirm_action "This will remove Wings and all its data."; then
+        return
+    fi
 
-    systemctl stop wings 2>/dev/null || true
-    systemctl disable wings 2>/dev/null || true
-    rm -f /etc/systemd/system/wings.service
-    systemctl daemon-reload
+    print_status "Stopping Wings service"
+    sudo systemctl stop wings.service 2>/dev/null || true
+    sudo systemctl disable wings.service 2>/dev/null || true
+    sudo rm -f /etc/systemd/system/wings.service
+    sudo systemctl daemon-reload
+    print_success "Wings service stopped and disabled"
 
-    echo ">>> Removing Wings files..."
-    rm -rf /etc/pterodactyl
-    rm -rf /var/lib/pterodactyl
-    rm -rf /var/log/pterodactyl
-    rm -f /usr/local/bin/wings
+    print_status "Removing Wings files"
+    sudo rm -rf /etc/pterodactyl
+    sudo rm -rf /var/lib/pterodactyl
+    sudo rm -rf /var/log/pterodactyl
+    sudo rm -f /usr/local/bin/wings
+    sudo rm -f /usr/local/bin/wing
+    print_success "Wings files removed"
 
-    echo "✅ Wings removed"
+    print_success "Wings uninstalled successfully!"
 }
 
 uninstall_both() {
+    print_header "UNINSTALLING BOTH PANEL AND WINGS"
+    
+    if ! confirm_action "This will remove both Pterodactyl Panel and Wings completely."; then
+        return
+    fi
+
     uninstall_panel
     uninstall_wings
-    echo "✅ Everything removed"
+    
+    print_success "Panel and Wings uninstalled together successfully!"
 }
 
-# ======================
-# BANNER (SHADOW)
-# ======================
-clear
-echo "====================================="
-echo "   ███████╗██╗  ██╗ █████╗ ██████╗ "
-echo "   ██╔════╝██║  ██║██╔══██╗██╔══██╗"
-echo "   ███████╗███████║███████║██║  ██║"
-echo "   ╚════██║██╔══██║██╔══██║██║  ██║"
-echo "   ███████║██║  ██║██║  ██║██████╔╝"
-echo "   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ "
-echo "         Shadow Uninstaller"
-echo "====================================="
+# -------- Menu --------
 
-# ======================
-# ROOT CHECK
-# ======================
-if [[ "$EUID" -ne 0 ]]; then
-    echo "❌ Run as root"
-    exit 1
-fi
-
-# ======================
-# MENU
-# ======================
+show_menu() {
+    clear
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}            🗑️ PTERODACTYL UNINSTALLER            ${NC}"
+    echo -e "${CYAN}                 by ShadowCoding-Hosting               ${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e ""
+    echo -e "${YELLOW}╔═══════════════════════════════════════════════╗${NC}"
+    echo -e "${YELLOW}║                📋 MENU OPTIONS                ║${NC}"
+    echo -e "${YELLOW}╠═══════════════════════════════════════════════╣${NC}"
+    echo -e "${YELLOW}║   ${GREEN}1)${NC} ${CYAN}Uninstall Panel Only${NC}                  ${YELLOW}║${NC}"
+    echo -e "${YELLOW}║   ${GREEN}2)${NC} ${CYAN}Uninstall Wings Only${NC}                  ${YELLOW}║${NC}"
+    echo -e "${YELLOW}║   ${GREEN}3)${NC} ${CYAN}Uninstall Panel + Wings${NC}               ${YELLOW}║${NC}"
+    echo -e "${YELLOW}║   ${GREEN}0)${NC} ${RED}Exit Uninstaller${NC}                     ${YELLOW}║${NC}"
+    echo -e "${YELLOW}╚═══════════════════════════════════════════════╝${NC}"
+    echo -e ""
+    echo -e "${MAGENTA}⚠️  Warning: These actions cannot be undone!${NC}"
+    echo -e ""
+}
 
 while true; do
-    echo ""
-    echo "1) Remove Panel"
-    echo "2) Remove Wings"
-    echo "3) Remove Both"
-    echo "0) Exit"
-    echo ""
-
-    read -rp "Choose: " choice
+    show_menu
+    
+    read -p "$(echo -e "${YELLOW}Choose an option [0-3]: ${NC}")" choice
 
     case $choice in
-        1) uninstall_panel ;;
-        2) uninstall_wings ;;
-        3) uninstall_both ;;
-        0) echo "Bye Shadow"; exit 0 ;;
-        *) echo "❌ Invalid option" ;;
+        1) 
+            uninstall_panel
+            ;;
+        2) 
+            uninstall_wings
+            ;;
+        3) 
+            uninstall_both
+            ;;
+        0) 
+            echo -e "${GREEN}Exiting uninstaller...${NC}"
+            exit 0
+            ;;
+        *) 
+            echo -e "${RED}❌ Invalid option! Please choose 0-3.${NC}"
+            sleep 2
+            ;;
     esac
 
-    echo ""
-    read -rp "Press Enter..."
+    echo -e ""
+    read -p "$(echo -e "${YELLOW}Press Enter to return to menu...${NC}")" -n 1
 done
