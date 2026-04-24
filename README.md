@@ -35,5 +35,5 @@
 
   **[🛑SUBSCRIBE TO ShadowCraftMC YOUTUBE CHANNEL]**
 
-  ![subscribe to shadowcraftmc](logo.png)
+  ![subscribe to shadowcraftmc](logo.jpg)
   
