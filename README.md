@@ -21,6 +21,8 @@
 | **CentOS/Rocky/AlmaLinux/Oracle Linux** | ❌ Not Supported |
 | **openSUSE** | ❌ Not Supported |
 
+![shadowcoding](logo.png)
+
 ## [💣INSTALL PTERODACTYL PANEL & GET FREE VPS 24/7]
 
   **🆔MAKING REAL VPS WITH IDX**
@@ -36,4 +38,3 @@
   **[🛑SUBSCRIBE TO ShadowCraftMC YOUTUBE CHANNEL]**
 
   ![subscribe to shadowcraftmc](logo.jpg)
-  
