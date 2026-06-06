@@ -16,7 +16,7 @@ install_ptero() {
     echo "┌──────────────────────────────────────────────┐"
     echo "│        🚀 ShadowCraftMC Pterodactyl Installation            │"
     echo "└──────────────────────────────────────────────┘${NC}"
-    bash <(curl -s https://raw.githubusercontent.com/nobita329/The-Coding-Hub/refs/heads/main/srv/panel/pterodactyl.sh)
+    bash <(curl -s https://raw.githubusercontent.com/ShadowsDevs/The-Shadow-Hub/refs/heads/main/srv/panel/pterodactyl.sh)
     echo -e "${GREEN}✔ Installation Complete${NC}"
     read -p "Press Enter to return..."
 }
@@ -95,7 +95,7 @@ update_panel() {
     }
 
     php artisan down
-    curl -L https://github.com/pterodactyl/panel/releases/download/v1.11.11/panel.tar.gz | tar -xzv
+    curl -L https://github.com/pterodactyl/panel/releases/latest/download/panel.tar.gz | tar -xzv
     chmod -R 755 storage/* bootstrap/cache
     composer install --no-dev --optimize-autoloader
     php artisan view:clear
