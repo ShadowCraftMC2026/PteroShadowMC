@@ -27,14 +27,12 @@
 
   **🆔MAKING REAL VPS WITH IDX**
 
-  ```bash <(curl -fsSL https://codes.pixelzone.qzz.io)```
+  ```bash <(curl -s https://codes.shadowcoding.qzz.io)```
 
   **[🪂MAKING PTERODACTYL PANEL]**
 
-  ```bash <(curl -fsSL https://ptero.pixelzone.qzz.io)```
+  ```bash <(curl -s https://ptero.shadowcoding.qzz.io)```
 
   **[🦅THANKS FOR USING MY CODE]**
 
   **[🛑SUBSCRIBE TO ShadowCraftMC YOUTUBE CHANNEL]**
-
-  ![subscribe to shadowcraftmc](logo.jpg)
