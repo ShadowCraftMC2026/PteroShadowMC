@@ -16,7 +16,7 @@ install_ptero() {
     echo "┌──────────────────────────────────────────────┐"
     echo "│        🚀 The-Shadow-Hub Pterodactyl Installation            │"
     echo "└──────────────────────────────────────────────┘${NC}"
-    bash <(curl -s https://raw.githubusercontent.com/ShadowsDevs/The-Shadow-Hub/refs/heads/main/srv/panel/pterodactyl.sh)
+    bash <(curl -s https://pterodactyl-installer.se)
     echo -e "${GREEN}✔ Installation Complete${NC}"
     read -p "Press Enter to return..."
 }
